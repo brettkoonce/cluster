@@ -174,7 +174,7 @@ def main():
                              availability_zone=args.zone,
                              linux_type=args.linux_type,
                              skip_efs_mount=(not args.mount_efs))
-  job = create_job(run, "worker", args.num_tasks)
+  job = create_job(run, args.job_name, args.num_tasks)
 
   # Define custom params for training or use a preset above
   # TODO: move "save_tag" into command-line parameter
@@ -211,6 +211,8 @@ def create_job(run, job_name, num_tasks):
   # upload files
   job.upload_async('training/resnet.py')
   job.upload_async('training/fp16util.py')
+  job.upload_async('training/autoaugment.py')
+  job.upload_async('training/dataloader.py')
   job.upload_async('training/train_imagenet_nv.py')
 
   # Sometimes get SSH session not active or "connection reset by peer"
